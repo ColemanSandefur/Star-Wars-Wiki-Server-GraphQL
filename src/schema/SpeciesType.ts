@@ -23,21 +23,21 @@ const SpeciesType: GraphQLObjectType = new GraphQLObjectType({
         average_lifespan: {type: GraphQLString},
         homeworld: {
             type: PlanetType,
-            resolve: (species) => {
-                return getFromURL(species.homeworld);
+            resolve: (species, args, {loaders}) => {
+                return loaders.planet.load(species.homeworld);
             }
         },
         language: {type: GraphQLString},
         people: {
             type: PersonType,
-            resolve: (species) => {
-                return species.people.map(getFromURL)
+            resolve: (species, args, {loaders}) => {
+                return loaders.person.loadMany(species.people);
             }
         },
         films: {
             type: FilmType,
-            resolve: (species) => {
-                return species.films.map(getFromURL)
+            resolve: (species, args, {loaders}) => {
+                return loaders.film.loadMany(species.films);
             }
         },
         created: {type: GraphQLString},

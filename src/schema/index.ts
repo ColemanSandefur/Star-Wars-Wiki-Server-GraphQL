@@ -7,7 +7,11 @@ import {
 import PersonType from "./PersonType"
 import PlanetType from "./PlanetType"
 
-import { getPersonByID, getPlanetByID } from "./helper";
+import { getFilmByID, getPersonByID, getPlanetByID, getSpeciesByID, getStarshipByID, getVehicleByID } from "./helper";
+import FilmType from "./FilmType";
+import SpeciesType from "./SpeciesType";
+import VehicleType from "./VehicleType";
+import StarshipType from "./StarshipType";
 
 const QueryType = new GraphQLObjectType({
     name: "Query", 
@@ -19,8 +23,8 @@ const QueryType = new GraphQLObjectType({
             args: {
                 id: {type: GraphQLString}
             },
-            resolve: (root, args) => {
-                return getPersonByID(args.id);
+            resolve: (root, args, {loaders}) => {
+                return loaders.person.load(getPersonByID(args.id));
             }
         },
         planet: {
@@ -28,8 +32,44 @@ const QueryType = new GraphQLObjectType({
             args: {
                 id: {type: GraphQLString}
             },
-            resolve: (root, args) => {
-                return getPlanetByID(args.id);
+            resolve: (root, args, {loaders}) => {
+                return loaders.planet.load(getPlanetByID(args.id));
+            }
+        },
+        film: {
+            type: FilmType,
+            args: {
+                id: {type: GraphQLString}
+            },
+            resolve: (root, args, {loaders}) => {
+                return loaders.film.load(getFilmByID(args.id));
+            }
+        }, 
+        species: {
+            type: SpeciesType,
+            args: {
+                id: {type: GraphQLString}
+            },
+            resolve: (root, args, {loaders}) => {
+                return loaders.species.load(getSpeciesByID(args.id));
+            }
+        },
+        vehicle: {
+            type: VehicleType,
+            args: {
+                id: {type: GraphQLString}
+            },
+            resolve: (root, args, {loaders}) => {
+                return loaders.vehicle.load(getVehicleByID(args.id));
+            }
+        },
+        starship: {
+            type: StarshipType,
+            args: {
+                id: {type: GraphQLString}
+            },
+            resolve: (root, args, {loaders}) => {
+                return loaders.starship.load(getStarshipByID(args.id));
             }
         }
     })

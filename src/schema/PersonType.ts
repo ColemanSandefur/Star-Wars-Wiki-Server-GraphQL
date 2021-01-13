@@ -27,32 +27,32 @@ const PersonType: GraphQLObjectType = new GraphQLObjectType({
         gender: {type: GraphQLString},
         homeworld: {
             type: PlanetType,
-            resolve: (person) => {
-                return getFromURL(person.homeworld);
+            resolve: (person, args, {loaders}) => {
+                return loaders.planet.load(person.homeworld);
             }
         },
         films: {
             type: GraphQLList(FilmType),
-            resolve: (person) => {
-                return person.films.map(getFromURL);
+            resolve: (person, args, {loaders}) => {
+                return loaders.film.loadMany(person.films);
             }
         },
         species: {
             type: GraphQLList(SpeciesType),
-            resolve: (person) => {
-                return person.species.map(getFromURL);
+            resolve: (person, args, {loaders}) => {
+                return loaders.species.loadMany(person.species);
             }
         },
         vehicles: {
             type: GraphQLList(VehicleType),
-            resolve: (person) => {
-                return person.vehicles.map(getFromURL);
+            resolve: (person, args, {loaders}) => {
+                return loaders.vehicle.loadMany(person.vehicles);
             }
         },
         starships: {
             type: GraphQLList(StarshipType),
-            resolve: (person) => {
-                return person.starships.map(getFromURL);
+            resolve: (person, args, {loaders}) => {
+                return loaders.starship.loadMany(person.starships);
             }
         },
         created: {type: GraphQLString},

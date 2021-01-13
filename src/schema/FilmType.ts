@@ -25,32 +25,32 @@ const FilmType: GraphQLObjectType = new GraphQLObjectType({
         release_date: {type: GraphQLString},
         characters: {
             type: GraphQLList(PersonType),
-            resolve: (film) => {
-                return film.characters.map(getFromURL);
+            resolve: (film, args, {loaders}) => {
+                return loaders.person.loadMany(film.characters)
             }
         },
-        Planets: {
+        planets: {
             type: GraphQLList(PlanetType),
-            resolve: (film) => {
-                return film.Planets.map(getFromURL);
+            resolve: (film, args, {loaders}) => {
+                return loaders.planet.loadMany(film.planets);
             }
         },
         starships: {
             type: GraphQLList(StarshipType),
-            resolve: (film) => {
-                return film.starships.map(getFromURL);
+            resolve: (film, args, {loaders}) => {
+                return loaders.starship.loadMany(film.starships);
             }
         },
         vehicles: {
             type: GraphQLList(VehicleType),
-            resolve: (film) => {
-                return film.vehicles.map(getFromURL);
+            resolve: (film, args, {loaders}) => {
+                return loaders.vehicle.loadMany(film.vehicles);
             }
         },
         species: {
             type: GraphQLList(SpeciesType),
-            resolve: (film) => {
-                return film.species.map(getFromURL);
+            resolve: (film, args, {loaders}) => {
+                return loaders.species.loadMany(film.species);
             }
         },
         created: {type: GraphQLString},

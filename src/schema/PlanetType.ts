@@ -24,11 +24,11 @@ const PlanetType: GraphQLObjectType = new GraphQLObjectType({
         population: {type: GraphQLString},
         residents: {
             type: GraphQLList(PersonType),
-            resolve: (planet) => planet.residents.map(getFromURL)
+            resolve: (planet, args, {loaders}) => loaders.person.loadMany(planet.residents)
         },
         films: {
             type: GraphQLList(FilmType),
-            resolve: (planet) => planet.films.map(getFromURL)
+            resolve: (planet, args, {loaders}) => loaders.film.loadMany(planet.films)
         },
         created: {type: GraphQLString},
         edited: {type: GraphQLString},

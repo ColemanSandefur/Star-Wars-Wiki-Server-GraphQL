@@ -26,14 +26,14 @@ const VehicleType: GraphQLObjectType = new GraphQLObjectType({
         vehicle_class: {type: GraphQLString},
         pilots: {
             type: GraphQLList(PersonType),
-            resolve: (vehicle) => {
-                return vehicle.pilots.map(getFromURL);
+            resolve: (vehicle, args, {loaders}) => {
+                return loaders.pilot.loadMany(vehicle.pilots);
             }
         },
         films: {
             type: GraphQLList(FilmType),
-            resolve: (vehicle) => {
-                return vehicle.films.map(getFromURL);
+            resolve: (vehicle, args, {loaders}) => {
+                return loaders.film.loadMany(vehicle.films);
             }
         },
         created: {type: GraphQLString},
