@@ -34,7 +34,11 @@ export function getFromURL(fullURL: string) {
 }
 
 export function loadAll<T extends AllTypes>(links: string[], keys: keyPair<T>) {
+    console.log(links);
     return links.map((value) => {
+        if (value === null) {
+            return;
+        }
         return keys[getIdFromLink(value)]
     });
 }

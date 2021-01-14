@@ -27,7 +27,9 @@ const SpeciesType: GraphQLObjectType = new GraphQLObjectType({
         homeworld: {
             type: PlanetType,
             resolve: (species) => {
-                return loadAll(species.homeworld, keys.planets);
+                let x = loadAll([species.homeworld], keys.planets)[0];
+                console.log(x);
+                return x;
             }
         },
         language: {type: GraphQLString},
