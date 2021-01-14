@@ -5,7 +5,7 @@ import {
 } from "graphql";
 
 import PersonType from "./PersonType"
-import {getFromURL}  from "./helper"
+import {getFromURL}  from "../helper"
 import FilmType from "./FilmType";
 
 const PlanetType: GraphQLObjectType = new GraphQLObjectType({

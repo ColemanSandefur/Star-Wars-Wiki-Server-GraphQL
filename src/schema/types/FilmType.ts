@@ -4,7 +4,7 @@ import {
     GraphQLString,
 } from "graphql";
 
-import {getFromURL}  from "./helper"
+import {getFromURL}  from "../helper"
 
 import PersonType from "./PersonType";
 import PlanetType from "./PlanetType";

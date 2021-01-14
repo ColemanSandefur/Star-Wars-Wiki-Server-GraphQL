@@ -5,11 +5,11 @@ import {
 } from "graphql";
 import FilmType from "./FilmType";
 
-import {getFromURL}  from "./helper"
+import {getFromURL}  from "../helper"
 import PersonType from "./PersonType";
 
-const StarshipType: GraphQLObjectType = new GraphQLObjectType({
-    name: "Starship",
+const VehicleType: GraphQLObjectType = new GraphQLObjectType({
+    name: "Vehicle",
     description: "...",
     
     fields: () => ({
@@ -23,19 +23,17 @@ const StarshipType: GraphQLObjectType = new GraphQLObjectType({
         passengers: {type: GraphQLString},
         cargo_capacity: {type: GraphQLString},
         consumables: {type: GraphQLString},
-        hyperdrive_rating: {type: GraphQLString},
-        MGLT: {type: GraphQLString},
-        starship_class: {type: GraphQLString},
+        vehicle_class: {type: GraphQLString},
         pilots: {
             type: GraphQLList(PersonType),
-            resolve: (starship, args, {loaders}) => {
-                return loaders.person.loadMany(starship.pilots);
+            resolve: (vehicle, args, {loaders}) => {
+                return loaders.pilot.loadMany(vehicle.pilots);
             }
         },
         films: {
             type: GraphQLList(FilmType),
-            resolve: (starship, args, {loaders}) => {
-                return loaders.film.loadMany(starship.films);
+            resolve: (vehicle, args, {loaders}) => {
+                return loaders.film.loadMany(vehicle.films);
             }
         },
         created: {type: GraphQLString},
@@ -44,4 +42,4 @@ const StarshipType: GraphQLObjectType = new GraphQLObjectType({
     })
 });
 
-export default StarshipType
+export default VehicleType

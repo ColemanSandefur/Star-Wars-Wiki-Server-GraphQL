@@ -1,11 +1,14 @@
 import express from 'express';
 import { graphqlHTTP } from "express-graphql";
 import DataLoader from "dataloader"
+const cors = require("cors");
 
 import MyQuery from "./schema"
 import { getFromURL } from './schema/helper';
 
 const app = express();
+
+app.use(cors());
 
 app.use(graphqlHTTP(req => {
     const genericLoader = new DataLoader(
@@ -30,4 +33,5 @@ app.use(graphqlHTTP(req => {
     }
 }));
 
-app.listen(3000);
+
+app.listen(5000);

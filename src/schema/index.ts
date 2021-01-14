@@ -1,17 +1,22 @@
 import { 
     GraphQLSchema,
     GraphQLObjectType,
-    GraphQLString,
+    GraphQLID,
 } from "graphql";
 
-import PersonType from "./PersonType"
-import PlanetType from "./PlanetType"
-
 import { getFilmByID, getPersonByID, getPlanetByID, getSpeciesByID, getStarshipByID, getVehicleByID } from "./helper";
-import FilmType from "./FilmType";
-import SpeciesType from "./SpeciesType";
-import VehicleType from "./VehicleType";
-import StarshipType from "./StarshipType";
+
+import PersonType from "./types/PersonType";
+import PlanetType from "./types/PlanetType";
+import FilmType from "./types/FilmType";
+import SpeciesType from "./types/SpeciesType";
+import VehicleType from "./types/VehicleType";
+import StarshipType from "./types/StarshipType";
+
+import loadAll from "./apiTypes/apiLoader/apiLoader";
+import { PersonAPI } from "./apiTypes/PersonAPI";
+
+loadAll<PersonAPI>("https://swapi.dev/api/people/").then(data => console.log("finished!!\n", data));
 
 const QueryType = new GraphQLObjectType({
     name: "Query", 
@@ -21,7 +26,7 @@ const QueryType = new GraphQLObjectType({
         person: {
             type: PersonType,
             args: {
-                id: {type: GraphQLString}
+                id: {type: GraphQLID}
             },
             resolve: (root, args, {loaders}) => {
                 return loaders.person.load(getPersonByID(args.id));
@@ -30,7 +35,7 @@ const QueryType = new GraphQLObjectType({
         planet: {
             type: PlanetType,
             args: {
-                id: {type: GraphQLString}
+                id: {type: GraphQLID}
             },
             resolve: (root, args, {loaders}) => {
                 return loaders.planet.load(getPlanetByID(args.id));
@@ -39,7 +44,7 @@ const QueryType = new GraphQLObjectType({
         film: {
             type: FilmType,
             args: {
-                id: {type: GraphQLString}
+                id: {type: GraphQLID}
             },
             resolve: (root, args, {loaders}) => {
                 return loaders.film.load(getFilmByID(args.id));
@@ -48,7 +53,7 @@ const QueryType = new GraphQLObjectType({
         species: {
             type: SpeciesType,
             args: {
-                id: {type: GraphQLString}
+                id: {type: GraphQLID}
             },
             resolve: (root, args, {loaders}) => {
                 return loaders.species.load(getSpeciesByID(args.id));
@@ -57,7 +62,7 @@ const QueryType = new GraphQLObjectType({
         vehicle: {
             type: VehicleType,
             args: {
-                id: {type: GraphQLString}
+                id: {type: GraphQLID}
             },
             resolve: (root, args, {loaders}) => {
                 return loaders.vehicle.load(getVehicleByID(args.id));
@@ -66,12 +71,12 @@ const QueryType = new GraphQLObjectType({
         starship: {
             type: StarshipType,
             args: {
-                id: {type: GraphQLString}
+                id: {type: GraphQLID}
             },
             resolve: (root, args, {loaders}) => {
                 return loaders.starship.load(getStarshipByID(args.id));
             }
-        }
+        },
     })
 });
 
