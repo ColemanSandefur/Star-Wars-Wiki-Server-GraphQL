@@ -3,9 +3,11 @@ import {
     GraphQLObjectType,
     GraphQLString,
 } from "graphql";
-import FilmType from "./FilmType";
 
-import {getFromURL}  from "../helper"
+import { keys } from "../cacheAPI";
+import { loadAll } from "../helper"
+
+import FilmType from "./FilmType";
 import PersonType from "./PersonType";
 
 const StarshipType: GraphQLObjectType = new GraphQLObjectType({
@@ -28,14 +30,14 @@ const StarshipType: GraphQLObjectType = new GraphQLObjectType({
         starship_class: {type: GraphQLString},
         pilots: {
             type: GraphQLList(PersonType),
-            resolve: (starship, args, {loaders}) => {
-                return loaders.person.loadMany(starship.pilots);
+            resolve: (starship) => {
+                return loadAll(starship.pilots, keys.people);
             }
         },
         films: {
             type: GraphQLList(FilmType),
-            resolve: (starship, args, {loaders}) => {
-                return loaders.film.loadMany(starship.films);
+            resolve: (starship) => {
+                return loadAll(starship.films, keys.films);
             }
         },
         created: {type: GraphQLString},

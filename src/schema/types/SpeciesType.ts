@@ -3,7 +3,9 @@ import {
     GraphQLString,
 } from "graphql";
 
-import {getFromURL}  from "../helper"
+import { keys } from "../cacheAPI";
+import { loadAll } from "../helper"
+
 import PersonType from "./PersonType";
 import PlanetType from "./PlanetType";
 import FilmType from "./FilmType";
@@ -23,21 +25,21 @@ const SpeciesType: GraphQLObjectType = new GraphQLObjectType({
         average_lifespan: {type: GraphQLString},
         homeworld: {
             type: PlanetType,
-            resolve: (species, args, {loaders}) => {
-                return loaders.planet.load(species.homeworld);
+            resolve: (species) => {
+                return loadAll(species.homeworld, keys.planets);
             }
         },
         language: {type: GraphQLString},
         people: {
             type: PersonType,
-            resolve: (species, args, {loaders}) => {
-                return loaders.person.loadMany(species.people);
+            resolve: (species) => {
+                return loadAll(species.people, keys.people);
             }
         },
         films: {
             type: FilmType,
-            resolve: (species, args, {loaders}) => {
-                return loaders.film.loadMany(species.films);
+            resolve: (species) => {
+                return loadAll(species.films, keys.films);
             }
         },
         created: {type: GraphQLString},

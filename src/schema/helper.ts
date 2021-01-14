@@ -1,4 +1,5 @@
 import fetch from "node-fetch";
+import { AllTypes, keyPair, getIdFromLink } from "./apiTypes/apiLoader/apiLoader";
 
 const BASE_URL = "http://swapi.dev/api"
 
@@ -30,4 +31,10 @@ export function getFromURL(fullURL: string) {
     console.log(`loading ${fullURL}`)
     return fetch(`${fullURL}`)
         .then(res => res.json())
+}
+
+export function loadAll<T extends AllTypes>(links: string[], keys: keyPair<T>) {
+    return links.map((value) => {
+        return keys[getIdFromLink(value)]
+    });
 }

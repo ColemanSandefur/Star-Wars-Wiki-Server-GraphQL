@@ -4,7 +4,8 @@ import {
     GraphQLString,
 } from "graphql";
 
-import {getFromURL}  from "../helper";
+import { keys } from "../cacheAPI";
+import { loadAll } from "../helper"
 
 import PlanetType from "./PlanetType";
 import FilmType from "./FilmType";
@@ -27,32 +28,32 @@ const PersonType: GraphQLObjectType = new GraphQLObjectType({
         gender: {type: GraphQLString},
         homeworld: {
             type: PlanetType,
-            resolve: (person, args, {loaders}) => {
-                return loaders.planet.load(person.homeworld);
+            resolve: (person) => {
+                return loadAll(person.homeworld, keys.planets);
             }
         },
         films: {
             type: GraphQLList(FilmType),
-            resolve: (person, args, {loaders}) => {
-                return loaders.film.loadMany(person.films);
+            resolve: (person) => {
+                return loadAll(person.films, keys.films);
             }
         },
         species: {
             type: GraphQLList(SpeciesType),
-            resolve: (person, args, {loaders}) => {
-                return loaders.species.loadMany(person.species);
+            resolve: (person) => {
+                return loadAll(person.species, keys.species);
             }
         },
         vehicles: {
             type: GraphQLList(VehicleType),
-            resolve: (person, args, {loaders}) => {
-                return loaders.vehicle.loadMany(person.vehicles);
+            resolve: (person) => {
+                return loadAll(person.vehicles, keys.vehicles);
             }
         },
         starships: {
             type: GraphQLList(StarshipType),
-            resolve: (person, args, {loaders}) => {
-                return loaders.starship.loadMany(person.starships);
+            resolve: (person) => {
+                return loadAll(person.starships, keys.starships);
             }
         },
         created: {type: GraphQLString},

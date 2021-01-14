@@ -4,8 +4,10 @@ import {
     GraphQLString,
 } from "graphql";
 
+import { keys } from "../cacheAPI";
+import { loadAll } from "../helper"
+
 import PersonType from "./PersonType"
-import {getFromURL}  from "../helper"
 import FilmType from "./FilmType";
 
 const PlanetType: GraphQLObjectType = new GraphQLObjectType({
@@ -24,11 +26,11 @@ const PlanetType: GraphQLObjectType = new GraphQLObjectType({
         population: {type: GraphQLString},
         residents: {
             type: GraphQLList(PersonType),
-            resolve: (planet, args, {loaders}) => loaders.person.loadMany(planet.residents)
+            resolve: (planet) => loadAll(planet.residents, keys.people)
         },
         films: {
             type: GraphQLList(FilmType),
-            resolve: (planet, args, {loaders}) => loaders.film.loadMany(planet.films)
+            resolve: (planet) => loadAll(planet.films, keys.films)
         },
         created: {type: GraphQLString},
         edited: {type: GraphQLString},

@@ -6,7 +6,7 @@ import { SpeciesAPI } from "../SpeciesAPI";
 import { StarshipAPI } from "../StarshipAPI";
 import { VehicleAPI } from "../VehicleAPI";
 
-type AllTypes = (PersonAPI | PlanetAPI | SpeciesAPI | StarshipAPI | VehicleAPI | FilmAPI)
+export type AllTypes = (PersonAPI | PlanetAPI | SpeciesAPI | StarshipAPI | VehicleAPI | FilmAPI)
 
 interface response<T extends AllTypes> {
     count: number,
@@ -19,7 +19,7 @@ export interface keyPair<T extends AllTypes> {
     [key: number]: T;
 }
 
-function getIdFromLink(link: string) {
+export function getIdFromLink(link: string) {
     return <number><any>link.match("\\d+")?.toString();
 }
 

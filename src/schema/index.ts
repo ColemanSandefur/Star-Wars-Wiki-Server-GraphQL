@@ -3,9 +3,9 @@ import {
     GraphQLObjectType,
     GraphQLID,
     GraphQLList,
+    GraphQLUnionType,
 } from "graphql";
 
-import { getFilmByID, getPersonByID, getPlanetByID, getSpeciesByID, getStarshipByID, getVehicleByID } from "./helper";
 import { arrays, keys } from "./cacheAPI";
 
 import PersonType from "./types/PersonType";
@@ -15,8 +15,15 @@ import SpeciesType from "./types/SpeciesType";
 import VehicleType from "./types/VehicleType";
 import StarshipType from "./types/StarshipType";
 
-import loadAll from "./apiTypes/apiLoader/apiLoader";
-import { PersonAPI } from "./apiTypes/PersonAPI";
+import { keyPair, AllTypes } from "./apiTypes/apiLoader/apiLoader"
+
+function resolver<T extends AllTypes>(keys: keyPair<T>, arr: T[], args: any) {
+    if (args.id !== undefined) {
+        return [keys[args.id]]
+    }
+
+    return arr;
+}
 
 const QueryType = new GraphQLObjectType({
     name: "Query", 
@@ -24,57 +31,57 @@ const QueryType = new GraphQLObjectType({
 
     fields: () => ({
         person: {
-            type: PersonType,
+            type: GraphQLList(PersonType),
             args: {
                 id: {type: GraphQLID}
             },
-            resolve: (root, args, {loaders}) => {
-                return loaders.person.load(getPersonByID(args.id));
+            resolve: (root, args) => {
+                return resolver(keys.people, arrays.people, args);
             }
         },
         planet: {
-            type: PlanetType,
+            type: GraphQLList(PlanetType),
             args: {
                 id: {type: GraphQLID}
             },
-            resolve: (root, args, {loaders}) => {
-                return loaders.planet.load(getPlanetByID(args.id));
+            resolve: (root, args) => {
+                return resolver(keys.planets, arrays.planets, args);
             }
         },
         film: {
-            type: FilmType,
+            type: GraphQLList(FilmType),
             args: {
                 id: {type: GraphQLID}
             },
-            resolve: (root, args, {loaders}) => {
-                return loaders.film.load(getFilmByID(args.id));
+            resolve: (root, args) => {
+                return resolver(keys.films, arrays.films, args);
             }
         }, 
         species: {
-            type: SpeciesType,
+            type: GraphQLList(SpeciesType),
             args: {
                 id: {type: GraphQLID}
             },
-            resolve: (root, args, {loaders}) => {
-                return loaders.species.load(getSpeciesByID(args.id));
+            resolve: (root, args) => {
+                return resolver(keys.species, arrays.species, args);
             }
         },
         vehicle: {
-            type: VehicleType,
+            type: GraphQLList(VehicleType),
             args: {
                 id: {type: GraphQLID}
             },
-            resolve: (root, args, {loaders}) => {
-                return loaders.vehicle.load(getVehicleByID(args.id));
+            resolve: (root, args) => {
+                return resolver(keys.vehicles, arrays.vehicles, args);
             }
         },
         starship: {
-            type: StarshipType,
+            type: GraphQLList(StarshipType),
             args: {
                 id: {type: GraphQLID}
             },
-            resolve: (root, args, {loaders}) => {
-                return loaders.starship.load(getStarshipByID(args.id));
+            resolve: (root, args) => {
+                return resolver(keys.starships, arrays.starships, args);
             }
         },
     })
