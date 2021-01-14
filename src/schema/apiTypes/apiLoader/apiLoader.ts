@@ -1,19 +1,12 @@
-import { json, response } from "express";
-import { 
-    GraphQLList,
-    GraphQLObjectType,
-    GraphQLString,
-} from "graphql";
-
 import fetch from "node-fetch";
+import { FilmAPI } from "../FilmAPI";
 import { PersonAPI } from "../PersonAPI";
 import { PlanetAPI } from "../PlanetAPI";
 import { SpeciesAPI } from "../SpeciesAPI";
 import { StarshipAPI } from "../StarshipAPI";
 import { VehicleAPI } from "../VehicleAPI";
 
-type AllTypes = (PersonAPI | PlanetAPI | SpeciesAPI | StarshipAPI | VehicleAPI)
-
+type AllTypes = (PersonAPI | PlanetAPI | SpeciesAPI | StarshipAPI | VehicleAPI | FilmAPI)
 
 interface response<T extends AllTypes> {
     count: number,
@@ -22,13 +15,20 @@ interface response<T extends AllTypes> {
     results: T[]
 }
 
-export default function loadAll<T extends AllTypes>(initLink: string) {
-    const load = (link: string, results: T[], cb: (data: any) => void) => {
+export interface keyPair<T extends AllTypes> {
+    [key: number]: T;
+}
+
+function getIdFromLink(link: string) {
+    return <number><any>link.match("\\d+")?.toString();
+}
+
+export default function loadAll<T extends AllTypes>(initLink: string): Promise<T[]> {
+    const load = (link: string, results: T[], cb: (data: T[]) => void) => {
         return fetch(link)
             .then(res => res.json())
             .then(json => {
                 let data = <response<T>>json
-                console.log(data.next);
                 
                 data.results.map((dat) => {
                     results.push(dat);
@@ -45,4 +45,14 @@ export default function loadAll<T extends AllTypes>(initLink: string) {
     return new Promise((res) => {
         load(initLink, [], res);
     });
+}
+
+export function convertToKeyPair<T extends AllTypes>(arr: T[]): keyPair<T> {
+    let pair: keyPair<T> = {};
+
+    arr.map((data) => {
+        pair[getIdFromLink(data.url)] = data;
+    });
+
+    return pair;
 }

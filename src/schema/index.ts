@@ -2,9 +2,11 @@ import {
     GraphQLSchema,
     GraphQLObjectType,
     GraphQLID,
+    GraphQLList,
 } from "graphql";
 
 import { getFilmByID, getPersonByID, getPlanetByID, getSpeciesByID, getStarshipByID, getVehicleByID } from "./helper";
+import { arrays, keys } from "./cacheAPI";
 
 import PersonType from "./types/PersonType";
 import PlanetType from "./types/PlanetType";
@@ -15,8 +17,6 @@ import StarshipType from "./types/StarshipType";
 
 import loadAll from "./apiTypes/apiLoader/apiLoader";
 import { PersonAPI } from "./apiTypes/PersonAPI";
-
-loadAll<PersonAPI>("https://swapi.dev/api/people/").then(data => console.log("finished!!\n", data));
 
 const QueryType = new GraphQLObjectType({
     name: "Query", 
