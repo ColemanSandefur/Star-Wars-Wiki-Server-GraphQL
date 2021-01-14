@@ -1,6 +1,7 @@
 import { 
     GraphQLObjectType,
     GraphQLString,
+    GraphQLList
 } from "graphql";
 
 import { keys } from "../cacheAPI";
@@ -31,13 +32,13 @@ const SpeciesType: GraphQLObjectType = new GraphQLObjectType({
         },
         language: {type: GraphQLString},
         people: {
-            type: PersonType,
+            type: GraphQLList(PersonType),
             resolve: (species) => {
                 return loadAll(species.people, keys.people);
             }
         },
         films: {
-            type: FilmType,
+            type: GraphQLList(FilmType),
             resolve: (species) => {
                 return loadAll(species.films, keys.films);
             }
