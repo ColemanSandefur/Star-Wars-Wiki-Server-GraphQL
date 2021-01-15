@@ -1,7 +1,8 @@
 import { 
     GraphQLObjectType,
     GraphQLString,
-    GraphQLList
+    GraphQLList,
+    GraphQLID
 } from "graphql";
 
 import { keys } from "../cacheAPI";
@@ -10,6 +11,7 @@ import { loadAll } from "../helper"
 import PersonType from "./PersonType";
 import PlanetType from "./PlanetType";
 import FilmType from "./FilmType";
+import { getIdFromLink } from "../apiTypes/apiLoader/apiLoader";
 
 const SpeciesType: GraphQLObjectType = new GraphQLObjectType({
     name: "Species",
@@ -48,6 +50,12 @@ const SpeciesType: GraphQLObjectType = new GraphQLObjectType({
         created: {type: GraphQLString},
         edited: {type: GraphQLString},
         url: {type: GraphQLString},
+        id: {
+            type: GraphQLID,
+            resolve: (species) => {
+                return getIdFromLink(species.url)
+            }
+        }
     })
 });
 

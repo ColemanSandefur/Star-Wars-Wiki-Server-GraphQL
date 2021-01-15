@@ -1,8 +1,10 @@
 import { 
+    GraphQLID,
     GraphQLList,
     GraphQLObjectType,
     GraphQLString,
 } from "graphql";
+import { getIdFromLink } from "../apiTypes/apiLoader/apiLoader";
 
 import { keys } from "../cacheAPI";
 import { loadAll } from "../helper"
@@ -41,6 +43,12 @@ const VehicleType: GraphQLObjectType = new GraphQLObjectType({
         created: {type: GraphQLString},
         edited: {type: GraphQLString},
         url: {type: GraphQLString},
+        id: {
+            type: GraphQLID,
+            resolve: (vehicle) => {
+                return getIdFromLink(vehicle.url);
+            }
+        }
     })
 });
 

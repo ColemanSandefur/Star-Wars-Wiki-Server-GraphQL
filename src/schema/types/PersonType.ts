@@ -1,4 +1,5 @@
 import { 
+    GraphQLID,
     GraphQLList,
     GraphQLObjectType,
     GraphQLString,
@@ -12,6 +13,7 @@ import FilmType from "./FilmType";
 import SpeciesType from "./SpeciesType";
 import VehicleType from "./VehicleType";
 import StarshipType from "./StarshipType";
+import { getIdFromLink } from "../apiTypes/apiLoader/apiLoader";
 
 const PersonType: GraphQLObjectType = new GraphQLObjectType({
     name: "Person",
@@ -61,6 +63,12 @@ const PersonType: GraphQLObjectType = new GraphQLObjectType({
         created: {type: GraphQLString},
         edited: {type: GraphQLString},
         url: {type: GraphQLString},
+        id: {
+            type: GraphQLID,
+            resolve: (person) => {
+                return getIdFromLink(person.url)
+            }
+        }
     })
 });
 
