@@ -31,9 +31,7 @@ const PersonType: GraphQLObjectType = new GraphQLObjectType({
         homeworld: {
             type: PlanetType,
             resolve: (person) => {
-                let x = loadAll([person.homeworld], keys.planets)[0]
-                console.log(x);
-                return x;
+                return loadAll([person.homeworld], keys.planets)[0];
             }
         },
         films: {

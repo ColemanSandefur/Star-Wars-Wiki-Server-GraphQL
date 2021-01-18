@@ -42,6 +42,8 @@ export default function loadAll<T extends AllTypes>(initLink: string): Promise<T
             });
     }
 
+    console.log(`Loading: ${initLink}`);
+
     return new Promise((res) => {
         load(initLink, [], res);
     });

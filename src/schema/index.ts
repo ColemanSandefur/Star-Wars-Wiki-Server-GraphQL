@@ -2,8 +2,7 @@ import {
     GraphQLSchema,
     GraphQLObjectType,
     GraphQLID,
-    GraphQLList,
-    GraphQLUnionType,
+    GraphQLList
 } from "graphql";
 
 import { arrays, keys } from "./cacheAPI";

@@ -24,14 +24,12 @@ const SpeciesType: GraphQLObjectType = new GraphQLObjectType({
         average_height: {type: GraphQLString},
         skin_colors: {type: GraphQLString},
         hair_colors: {type: GraphQLString},
-        ele_colors: {type: GraphQLString},
+        eye_colors: {type: GraphQLString},
         average_lifespan: {type: GraphQLString},
         homeworld: {
             type: PlanetType,
             resolve: (species) => {
-                let x = loadAll([species.homeworld], keys.planets)[0];
-                console.log(x);
-                return x;
+                return loadAll([species.homeworld], keys.planets)[0];
             }
         },
         language: {type: GraphQLString},
